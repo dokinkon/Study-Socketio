@@ -23,13 +23,22 @@ io.sockets.on('connection', function (socket){
 	});
 
 	socket.on('create or join', function (room) {
-		//var numClients = io.sockets.clients(room).length;
-        var numClients = io.sockets.adapter.rooms[room].length;
+        log('create or join', room);
+
+        var clients = io.sockets.adapter.rooms[room]; 
+
+        var numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
+
+
+
 
 		log('Room ' + room + ' has ' + numClients + ' client(s)');
 		log('Request to create or join room', room);
+        console.log("numClients:" + numClients);
 
 		if (numClients == 0){
+
+
 			socket.join(room);
 			socket.emit('created', room);
 		} else if (numClients == 1) {
